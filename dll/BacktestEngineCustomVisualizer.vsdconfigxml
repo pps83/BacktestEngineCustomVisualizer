@@ -5,13 +5,13 @@ Licensed under the MIT license. See LICENSE file in the project root for full li
 -->
 
 <!--
-This file is used to describe the BacktestEngineCustomVisualizer component. This file is run through 
+This file is used to describe the BacktestEngineCustomVisualizer component. This file is run through
 vsdconfigtool.exe as part of the build, which generates two other files:
 
-* BacktestEngineCustomVisualizer.Contract.h contains a C++ class header, and ensures that the code and 
+* BacktestEngineCustomVisualizer.Contract.h contains a C++ class header, and ensures that the code and
 configuration stay in sync.
 
-* BacktestEngineCustomVisualizer.vsdconfig is a binary version of this file which is deployed along with 
+* BacktestEngineCustomVisualizer.vsdconfig is a binary version of this file which is deployed along with
 BacktestEngineCustomVisualizer.dll. BacktestEngineCustomVisualizer.vsdconfig is then read by he component loading system at runtime.
 
 For more information about this file, see https://github.com/Microsoft/ConcordExtensibilitySamples/wiki/Component-discovery-and-configuration
@@ -20,7 +20,7 @@ For more information about this file, see https://github.com/Microsoft/ConcordEx
 <Configuration xmlns="http://schemas.microsoft.com/vstudio/vsdconfig/2008">
 
   <!--TODO: If you copy the sample, ensure to regenerate the GUIDs in this file. This
-  can be done with the 'Create GUID' tool ('Tools->Create GUID' in Visual Sudio or 
+  can be done with the 'Create GUID' tool ('Tools->Create GUID' in Visual Studio or
   guidgen.exe from the command line). -->
 
   <NativeComponent
@@ -41,6 +41,6 @@ For more information about this file, see https://github.com/Microsoft/ConcordEx
         </InterfaceGroup>
       </Implements>
     </Class>
-  
+
   </NativeComponent>
 </Configuration>
