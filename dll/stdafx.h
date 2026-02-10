@@ -11,6 +11,8 @@
 #define STRICT
 #endif
 
+#define BOOST_ALL_NO_LIB
+
 #include "targetver.h"
 
 #define _ATL_FREE_THREADED

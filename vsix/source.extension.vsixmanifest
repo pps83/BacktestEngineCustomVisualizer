@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="9EC4CD87-F456-428D-9638-CD309CA04DDE" Version="1.0" Language="en-US" Publisher="Pavel P" />
+    <Identity Id="9EC4CD87-F456-428D-9638-CD309CA04DDE" Version="1.1" Language="en-US" Publisher="Pavel P" />
     <DisplayName>BacktestEngineCustomVisualizer</DisplayName>
     <Description xml:space="preserve">backtest-engine custom visualizer</Description>
   </Metadata>
