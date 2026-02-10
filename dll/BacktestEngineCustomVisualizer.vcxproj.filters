@@ -31,6 +31,9 @@
     <ClCompile Include="_EntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PrintInt128.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BacktestEngineCustomVisualizer.def">

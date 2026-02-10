@@ -20,4 +20,13 @@ For information about natvis files see: https://docs.microsoft.com/en-us/visuals
     <!--NOTE: The 'VisualizerId' is also specified in the .vsdconfigxml to control which implementation of IDkmCustomVisualizer is used.-->
     <CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/>
   </Type>
+  <Type Name="boost::decimal::decimal32_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::decimal::decimal64_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::decimal::decimal128_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::decimal::decimal_fast32_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::decimal::decimal_fast64_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::decimal::decimal_fast128_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+
+  <Type Name="boost::int128::int128_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::int128::uint128_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
 </AutoVisualizer>

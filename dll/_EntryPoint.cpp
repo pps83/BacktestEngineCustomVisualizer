@@ -6,6 +6,10 @@
 #include "stdafx.h"
 #include "_EntryPoint.h"
 #include "../../../src/symbol.h"
+#include <boost/decimal.hpp>
+
+char* toChars(char* ptr, char* ptrEnd, boost::int128::int128_t i128);
+char* toChars(char* ptr, char* ptrEnd, boost::int128::uint128_t u128);
 
 HRESULT STDMETHODCALLTYPE CBacktestEngineCustomVisualizerService::EvaluateVisualizedExpression(
     _In_ Evaluation::DkmVisualizedExpression* pVisualizedExpression,
@@ -34,54 +38,96 @@ HRESULT STDMETHODCALLTYPE CBacktestEngineCustomVisualizerService::EvaluateVisual
     }
 
     // Read the FILETIME value from the target process
-    bool isSymbol0 = false;
-    bool isSymbol1 = false;
-    bool isSymbol2 = false;
+    bool is_Symbol0 = false;
+    bool is_Symbol1 = false;
+    bool is_Symbol2 = false;
 
-    if (pRootVisualizedExpression->Type() && pRootVisualizedExpression->Type()->Value())
-    {
-        CString type(pRootVisualizedExpression->Type()->Value());
-        if (type.Find(L"Symbol0") != -1)
-            isSymbol0 = true;
-        else if (type.Find(L"Symbol1") != -1)
-            isSymbol1 = true;
-        else if (type.Find(L"Symbol2") != -1)
-            isSymbol2 = true;
-    }
-    else
-        isSymbol2 = true;
+    bool is_decimal32 = false;
+    bool is_decimal64 = false;
+    bool is_decimal128 = false;
+    bool is_decimal_fast32 = false;
+    bool is_decimal_fast64 = false;
+    bool is_decimal_fast128 = false;
 
-    DkmProcess* pTargetProcess = pVisualizedExpression->RuntimeInstance()->Process();
+    bool is_int128 = false;
+    bool is_uint128 = false;
+
     Symbol0 sym0;
     Symbol1 sym1;
     Symbol2 sym2;
-    if (isSymbol0)
-        hr = pTargetProcess->ReadMemory(pPointerValueHome->Address(), DkmReadMemoryFlags::None, &sym0.symNum, sizeof(sym0.symNum), nullptr);
-    else if (isSymbol1)
-        hr = pTargetProcess->ReadMemory(pPointerValueHome->Address(), DkmReadMemoryFlags::None, &sym1.symNum, sizeof(sym1.symNum), nullptr);
-    else if (isSymbol2)
-        hr = pTargetProcess->ReadMemory(pPointerValueHome->Address(), DkmReadMemoryFlags::None, &sym2.symNum, sizeof(sym2.symNum), nullptr);
+
+    boost::decimal::decimal32_t decimal32;
+    boost::decimal::decimal64_t decimal64;
+    boost::decimal::decimal128_t decimal128;
+    boost::decimal::decimal_fast32_t decimal_fast32;
+    boost::decimal::decimal_fast64_t decimal_fast64;
+    boost::decimal::decimal_fast128_t decimal_fast128;
+
+    boost::int128::int128_t int128;
+    boost::int128::uint128_t uint128;
+
+    char symStr[128] = {};
+
+    CString expressionType;
+
+    auto type = pRootVisualizedExpression->Type();
+    DkmProcess* pTargetProcess = pVisualizedExpression->RuntimeInstance()->Process();
+
+
+#define DO_CHECK(name, flag, var, conv)                                      \
+    if (expressionType.Find(name) != -1)                                     \
+    {                                                                        \
+        flag = true;                                                         \
+        UINT32 bytesRead = 0;                                                \
+        hr = pTargetProcess->ReadMemory(pPointerValueHome->Address(),        \
+            DkmReadMemoryFlags::None, (void*)&var, sizeof(var), &bytesRead); \
+        if (bytesRead != sizeof(var))                                        \
+            hr = -1;                                                         \
+        if (SUCCEEDED(hr) && bytesRead == sizeof(var))                       \
+        {                                                                    \
+            conv;                                                            \
+        }                                                                    \
+    }                                                                        \
+
+#define CHECK_SYMBOL(name, flag, var) DO_CHECK(name, flag, var, var.toStringImpl(symStr))
+
+#define CHECK_DECIMAL(name, n) DO_CHECK(name, is_decimal##n, decimal##n, *to_chars(symStr, symStr + sizeof(symStr), decimal##n).ptr='\0')
+
+#define CHECK_I128(name, var) DO_CHECK(name, is_##var, var, toChars(symStr, symStr + sizeof(symStr), var))
+
+    if (type && type->Value())
+    {
+        expressionType = type->Value();
+
+        CHECK_SYMBOL(L"Symbol0", is_Symbol0, sym0);
+        CHECK_SYMBOL(L"Symbol1", is_Symbol1, sym1);
+        CHECK_SYMBOL(L"Symbol2", is_Symbol2, sym2);
+
+        CHECK_DECIMAL(L"decimal32", 32);
+        CHECK_DECIMAL(L"decimal64", 64);
+        CHECK_DECIMAL(L"decimal128", 128);
+        CHECK_DECIMAL(L"decimal_fast32", _fast32);
+        CHECK_DECIMAL(L"decimal_fast64", _fast64);
+        CHECK_DECIMAL(L"decimal_fast128", _fast128);
+
+        CHECK_I128(L"::int128_t", int128);
+        CHECK_I128(L"::uint128_t", uint128);
+    }
+    else
+        is_Symbol2 = true;
+
     if (FAILED(hr))
     {
         // If the bytes of the value cannot be read from the target process, just fall back to the default visualization
         return E_NOTIMPL;
     }
 
-    char symStr[32] = {};
-
-    if (isSymbol0)
-        sym0.toStringImpl(symStr);
-    else if (isSymbol1)
-        sym1.toStringImpl(symStr);
-    else if (isSymbol2)
-        sym2.toStringImpl(symStr);
-
-    int len = strlen(symStr);
+    size_t len = strlen(symStr);
     if (len == 0)
         strcpy(symStr, "???");
-    else
+    else if (is_Symbol0 || is_Symbol1 || is_Symbol2)
     {
-        for (int i = 0; i < len; ++i)
+        for (size_t i = 0; i < len; ++i)
         {
             if (symStr[i] < '.' || symStr[i] > 'Z')
             {
@@ -90,7 +136,8 @@ HRESULT STDMETHODCALLTYPE CBacktestEngineCustomVisualizerService::EvaluateVisual
             }
         }
     }
-    
+
+    //CString strValue(L"expressionType is: \"" + expressionType + L"\", value : " + CA2T(symStr));
     CString strValue(symStr);
 
     CString strEditableValue;
