@@ -105,6 +105,7 @@ HRESULT STDMETHODCALLTYPE CBacktestEngineCustomVisualizerService::EvaluateVisual
 
         CHECK_DECIMAL(L"decimal32", 32);
         CHECK_DECIMAL(L"decimal64", 64);
+        CHECK_DECIMAL(L"Decimal", 64);
         CHECK_DECIMAL(L"decimal128", 128);
         CHECK_DECIMAL(L"decimal_fast32", _fast32);
         CHECK_DECIMAL(L"decimal_fast64", _fast64);
