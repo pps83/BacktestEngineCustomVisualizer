@@ -66,7 +66,7 @@ HRESULT STDMETHODCALLTYPE CBacktestEngineCustomVisualizerService::EvaluateVisual
     boost::int128::int128_t int128;
     boost::int128::uint128_t uint128;
 
-    char symStr[128] = {};
+    char symStr[1024] = {};
 
     CString expressionType;
 
