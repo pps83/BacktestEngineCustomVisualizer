@@ -111,8 +111,8 @@ HRESULT STDMETHODCALLTYPE CBacktestEngineCustomVisualizerService::EvaluateVisual
         CHECK_DECIMAL(L"decimal_fast64", _fast64);
         CHECK_DECIMAL(L"decimal_fast128", _fast128);
 
-        CHECK_I128(L"::int128_t", int128);
-        CHECK_I128(L"::uint128_t", uint128);
+        CHECK_I128(L"int128::int128", int128);
+        CHECK_I128(L"int128::uint128", uint128);
     }
     else
         is_Symbol2 = true;

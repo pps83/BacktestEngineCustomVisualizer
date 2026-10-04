@@ -30,6 +30,8 @@ For information about natvis files see: https://docs.microsoft.com/en-us/visuals
 
   <Type Name="boost::int128::int128_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
   <Type Name="boost::int128::uint128_t"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::int128::int128"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
+  <Type Name="boost::int128::uint128"><CustomVisualizer VisualizerId="2AB56837-13C3-471D-AF27-BFCFE5205EF7"/></Type>
 
   <!-- Visualizer for utils::FastPimpl<T, Size, Alignment, Strict> -->
   <Type Name="utils::FastPimpl&lt;*,*,*,*&gt;">
